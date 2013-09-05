@@ -8,39 +8,39 @@ import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 
 public class BookMarks extends JComponent implements MouseListener{
-	private int minuteMark;
+	private double timeMark;
 	private int markID;
 	private String nameString;
 	@SuppressWarnings("unused")
 	private Color color;
 	
 	public BookMarks(){
-		minuteMark = 1;
-		nameString = Integer.toString(minuteMark);
+		timeMark = 1;
+		nameString = Double.toString(timeMark);
 		color = Color.BLUE;
 	}
 	
-	public BookMarks(int minuteMark){
-		this.minuteMark = minuteMark;
-		nameString = Integer.toString(minuteMark);
+	public BookMarks(int timeMark){
+		this.timeMark = timeMark;
+		nameString = Integer.toString(timeMark);
 		color = Color.BLUE;
 	}
 	
-	public BookMarks(int minuteMark, Color color){
-		this.minuteMark = minuteMark;
-		nameString = Integer.toString(minuteMark);
+	public BookMarks(int timeMark, Color color){
+		this.timeMark = timeMark;
+		nameString = Integer.toString(timeMark);
 		this.color = color;
 	}	
 	
-	public BookMarks(int minuteMark, int markID, String nameString, Color color){
-		this.minuteMark = minuteMark;
+	public BookMarks(int timeMark, int markID, String nameString, Color color){
+		this.timeMark = timeMark;
 		this.markID = markID;
 		this.nameString = nameString;
 		this.color = color;
 	}
 	
 	public void setMinuteMark(int minuteLocation) {
-		minuteMark = minuteLocation;
+		timeMark = minuteLocation;
 	}
 	
 	public void setName(String name) {
@@ -51,8 +51,8 @@ public class BookMarks extends JComponent implements MouseListener{
 		color = colorMark;
 	}
 	
-	public int getMinuteMark() {
-		return minuteMark;
+	public double getMinuteMark() {
+		return timeMark;
 	}
 	
 	public String getName() {
