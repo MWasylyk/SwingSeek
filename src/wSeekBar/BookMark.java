@@ -10,7 +10,7 @@ import javax.swing.JComponent;
 public class BookMark extends JComponent implements MouseListener{
 	// Time location in seconds
 	private double timeMark;
-	// TODO FIGUREOUT WHY I WANTED AN ID
+	// TODO FIGUREOUT WHY I WANTED AN ID (FOR SQL DATABASE AND CONNECTIONS?!)
 	private int markID;
 	// Description of BookMark (time/name)
 	private String nameString;
