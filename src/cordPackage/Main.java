@@ -2,12 +2,14 @@
 package cordPackage;
 
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import wSeekBar.MSeekBar;
 
 public class Main extends JFrame {
-	// 
 	MSeekBar seekBar = new MSeekBar();
 
 	public static void main(String[] args) {
@@ -19,7 +21,6 @@ public class Main extends JFrame {
 	// Swing startup code
 	public Main(){
 		setTitle("Main Window");
-		setSize(300, 300);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);   
 		init();
 	}
@@ -27,8 +28,8 @@ public class Main extends JFrame {
 	public void init(){
 		// Panel for holding main JComponents
 		JPanel mainPanel = new JPanel();
-		
-		this.setResizable(false);
+		this.setSize(300, 300);
+		this.setLayout(null);
 		
 		// Setup code for the main panel
 		mainPanel.setLayout(null);
@@ -36,9 +37,15 @@ public class Main extends JFrame {
 		mainPanel.setSize(300, 300);
 		mainPanel.setBackground(Color.lightGray);
 		
+		// Set location of seekBar
+		seekBar.setLocation(20, 200);
+		// Set size of seekBar
+		seekBar.setSize(250, 20);
+		
 		// Add JComponents to the main panel and the JFrame
 		mainPanel.add(seekBar);
 		add(mainPanel);
+		this.setResizable(false);
 	}
 
 }
