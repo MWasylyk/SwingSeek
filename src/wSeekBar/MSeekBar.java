@@ -16,7 +16,7 @@ public class MSeekBar extends JComponent {
 	int sizeX = 100,sizeY = 20;
 	// Width of seek bar used for calculating marker location
 	int sizeInPx;
-	// Px from left edge 
+	// PX from left edge 
 	int seekLeftOffset = 7;
 	// Height in PX used for rendering
 	int seekThickness = 4;
@@ -26,7 +26,9 @@ public class MSeekBar extends JComponent {
 	
 	
 	public MSeekBar(){
+		// Set Size of seekBar to the preferred size
 		this.setSize(this.getPreferredSize());
+		// calculate length of seekBar in PX
 		sizeInPx = getSeekLength();
 	}
 	
@@ -42,6 +44,18 @@ public class MSeekBar extends JComponent {
 		
 		// left offset, vertical = (height/2 - seekThickness/2), length = (width - (left offset*2)), seekThicknes
 		g2D.fillRect(seekLeftOffset, getHeight()/2 - (seekThickness/2), getWidth()-(seekLeftOffset*2), seekThickness);
+	}
+	
+	public void setSize(int width, int height){
+		super.setSize(width, height);
+		// Recalculate length of seekBar after resize
+		sizeInPx = getSeekLength();
+	}
+	
+	public void setSize(Dimension size){
+		super.setSize(size);
+		// Recalculate length of seekBar after resize
+		sizeInPx = getSeekLength();
 	}
 	
 	// Move seek marker to current time and repaint
