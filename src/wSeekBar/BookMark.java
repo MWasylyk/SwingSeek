@@ -7,32 +7,35 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
-public class BookMarks extends JComponent implements MouseListener{
+public class BookMark extends JComponent implements MouseListener{
+	// Time location in seconds
 	private double timeMark;
+	// TODO FIGUREOUT WHY I WANTED AN ID
 	private int markID;
+	// Description of BookMark (time/name)
 	private String nameString;
-	@SuppressWarnings("unused")
+	// Add coloring to BookMarks for easier viewing
 	private Color color;
 	
-	public BookMarks(){
+	public BookMark(){
 		timeMark = 1;
 		nameString = Double.toString(timeMark);
 		color = Color.BLUE;
 	}
 	
-	public BookMarks(int timeMark){
+	public BookMark(int timeMark){
 		this.timeMark = timeMark;
 		nameString = Integer.toString(timeMark);
 		color = Color.BLUE;
 	}
-	
-	public BookMarks(int timeMark, Color color){
+	// TODO add color picker in MSeekBar and feed to constructor
+	public BookMark(int timeMark, Color color){
 		this.timeMark = timeMark;
 		nameString = Integer.toString(timeMark);
 		this.color = color;
 	}	
 	
-	public BookMarks(int timeMark, int markID, String nameString, Color color){
+	public BookMark(int timeMark, int markID, String nameString, Color color){
 		this.timeMark = timeMark;
 		this.markID = markID;
 		this.nameString = nameString;
@@ -71,6 +74,8 @@ public class BookMarks extends JComponent implements MouseListener{
 	
 	}
 
+	// TODO when mouse is pressed on BookMark
+	// show ToolTipEditor with time mark and name along with delete button
 	public void mousePressed(MouseEvent arg0) {
 		
 	}

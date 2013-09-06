@@ -2,5 +2,6 @@
 package wSeekBar;
 
 public class ToolTipEditor {
-// popup on mouseover of bookmark
+	//TODO show ToolTipEditor with time mark and name along with delete button
+	//TODO popup on mouseover of bookmark
 }
