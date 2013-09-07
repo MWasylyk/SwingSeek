@@ -2,14 +2,9 @@
 package seekPackage;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.Rectangle;
 
-import javax.swing.JComponent;
-
-public class BookMark {
+public class BookMark extends Rectangle{
 	// Time location in seconds
 	private int timeMark;
 	// True PX location on SeekBar
@@ -23,7 +18,7 @@ public class BookMark {
 	
 	public BookMark(){
 		timeMark = 1;
-		nameString = Double.toString(timeMark);
+		nameString = Integer.toString(timeMark);
 		color = Color.BLUE;
 	}
 	
@@ -77,27 +72,4 @@ public class BookMark {
 	public String getTipName() {
 		return nameString;
 	}
-
-	public void mouseClicked(MouseEvent arg0) {
-	
-	}
-
-	public void mouseEntered(MouseEvent arg0) {
-	
-	}
-
-	public void mouseExited(MouseEvent arg0) {
-	
-	}
-
-	// TODO when mouse is pressed on BookMark
-	// show ToolTipEditor with time mark and name along with delete button
-	public void mousePressed(MouseEvent arg0) {
-		
-	}
-
-	public void mouseReleased(MouseEvent arg0) {
-		
-	}
-
 }

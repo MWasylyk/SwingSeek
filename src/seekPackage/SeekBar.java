@@ -6,29 +6,31 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
-public class SeekBar extends JComponent {
+public class SeekBar extends JComponent implements MouseListener{
 	// Time location in seconds
 	int timeLocation;
 	// If SeekBar changes in size remember requested location for recalculation
 	int requestedLocation;
 	// Max size of SeekBar in seconds
 	int maxTime;
-	// PX from left edge 
+	// PX from left edge
 	int seekLeftOffset = 10;
 	// Height in PX used for rendering
 	int seekThickness = 5;
 	// Scale for arrow rendering
-	int arrowScale = seekThickness+2;
+	int arrowScale = seekThickness+4;
 	// midPoint point for SeekBar rendering
 	int midPoint = getHeight()/2;
 	// BookMark fill thickness
-	int markThickness = 3;
+	int markThickness = 6;
 	// BookMark fill height
-	int markHeight = 15;	
+	int markHeight = 20;
 	
 	// ArrayList to hold BookMark objects
 	// TODO will be used for loading and saving of marker location
@@ -59,7 +61,7 @@ public class SeekBar extends JComponent {
 
 		// Draw SeekBar BG
 		g2D.setColor(Color.black);
-		//g2D.fillRect(0, 0, this.getWidth(), this.getHeight());
+		g2D.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 		// Draw SeekBar 
 		g2D.setColor(Color.white);
@@ -69,7 +71,8 @@ public class SeekBar extends JComponent {
 		// Draw BookMarks ///REMOVE AND MOVE TO MAIN 
 		for(int i = 0; i < marks.size(); i++) {
 			g2D.setColor(marks.get(i).getColor());
-			g2D.fillRect(marks.get(i).getLocationMark() - markThickness, midPoint-(markHeight/2), markThickness, markHeight);
+			marks.get(i).setBounds(marks.get(i).getLocationMark() - markThickness, midPoint-(markHeight/2), markThickness, markHeight);
+			g2D.fill(marks.get(i));
 		}
 		
 		// Draw arrow that scales with thickness of SeekBar
@@ -141,6 +144,44 @@ public class SeekBar extends JComponent {
 		for(int i = 0; i < marks.size(); i ++) {
 			marks.get(i).setLocationMark(getRequestedLocation(marks.get(i).getMinuteMark()));
 		}
+	}
+	
+	private int clickedOnMark(int x, int y){
+		for(int i = 0; i < marks.size(); i ++) {
+			if(marks.get(i).contains(x, y)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public void mouseClicked(MouseEvent arg0) {
+		int x = arg0.getX(), y = arg0.getY();
+		System.out.println(clickedOnMark(x,y));
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
