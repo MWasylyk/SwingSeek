@@ -72,4 +72,8 @@ public class BookMark extends Rectangle{
 	public String getTipName() {
 		return nameString;
 	}
+	
+	public void setTipName(String name) {
+		nameString = name;
+	}
 }

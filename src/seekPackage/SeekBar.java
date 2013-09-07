@@ -11,6 +11,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class SeekBar extends JComponent implements MouseListener{
 	// Time location in seconds
@@ -37,7 +39,7 @@ public class SeekBar extends JComponent implements MouseListener{
 	ArrayList<BookMark> marks = new ArrayList<BookMark>();
 	
 	public SeekBar(){
-		
+		this.setDoubleBuffered(true);
 		
 		//FOR TESTING
 		marks.add(new BookMark(50, Color.green));
@@ -147,6 +149,7 @@ public class SeekBar extends JComponent implements MouseListener{
 	}
 	
 	private int clickedOnMark(int x, int y){
+		// If mouse x,y is inside one of the BookMarks return which index the BookMark is located
 		for(int i = 0; i < marks.size(); i ++) {
 			if(marks.get(i).contains(x, y)) {
 				return i;
@@ -157,7 +160,16 @@ public class SeekBar extends JComponent implements MouseListener{
 
 	public void mouseClicked(MouseEvent arg0) {
 		int x = arg0.getX(), y = arg0.getY();
-		System.out.println(clickedOnMark(x,y));
+		if(clickedOnMark(x,y) >= 0) {
+			// TODO ADD FINAL BOOKMARK SETTING
+			String markName = JOptionPane.showInputDialog("Set BookMark name");
+			double setMarkName = Double.parseDouble(marks.get(clickedOnMark(x,y)).getTipName())/60;
+			setMarkName = Math.round(setMarkName * 100);
+			setMarkName = setMarkName/100;
+			markName = String.valueOf(setMarkName) + ", " + markName;
+			System.out.printf( markName);
+			
+		}
 	}
 
 	@Override
