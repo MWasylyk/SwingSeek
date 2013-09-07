@@ -1,6 +1,7 @@
 // By Michael Wasylyk
 package cordPackage;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -42,7 +43,7 @@ public class Main extends JFrame {
 		
 		// Set size of seekBar
 		seekBar.setSize(250, 25);
-		seekBar.setSeekLocation(5);
+		seekBar.setSeekLocation(150);
 		
 		// Add JComponents to the main panel and the JFrame
 		mainPanel.add(seekBar);

@@ -87,7 +87,7 @@ public class SeekBar extends JComponent {
 		
 		double tempTime;
 		tempTime = (double)requestedLocation/maxTime * sizeInPx;
-		timeLocation = (int)(Math.round(tempTime) + seekLeftOffset);
+		timeLocation = (int)(Math.round(tempTime) + seekLeftOffset) - arrowScale;
 		repaint();
 	}
 	
