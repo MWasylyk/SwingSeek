@@ -33,7 +33,10 @@ public class SeekBar extends JComponent implements MouseListener{
 	int markThickness = 6;
 	// BookMark fill height
 	int markHeight = 20;
-	
+	// VARS FOR TIP TIME VIEW
+	int timeHeight = 10;
+	// SIZE TO * FOR NUMBER OF CHARS
+	int timeTextScale = 12;
 	// ArrayList to hold BookMark objects
 	// TODO will be used for loading and saving of marker location
 	ArrayList<BookMark> marks = new ArrayList<BookMark>();
@@ -43,7 +46,6 @@ public class SeekBar extends JComponent implements MouseListener{
 		
 		//FOR TESTING
 		marks.add(new BookMark(50, true, Color.green));
-		marks.add(new BookMark(70, true, Color.green));
 		
 		// Set Size of SeekBar to the preferred size
 		this.setSize(this.getPreferredSize());
@@ -70,13 +72,27 @@ public class SeekBar extends JComponent implements MouseListener{
 		// Left offset, vertical = (height/2 - seekThickness/2), length = (width - (left offset*2)), seekThicknes
 		g2D.fillRect(seekLeftOffset, midPoint - (seekThickness/2), getWidth()-(seekLeftOffset*2), seekThickness);
 		
-		// Draw BookMarks ///REMOVE AND MOVE TO MAIN 
+		// Draw BookMarks 
 		for(int i = 0; i < marks.size(); i++) {
 			g2D.setColor(marks.get(i).getColor());
 			marks.get(i).setBounds(marks.get(i).getLocationMark() - markThickness, midPoint-(markHeight/2), markThickness, markHeight);
 			g2D.fill(marks.get(i));
-		}
-		
+
+			/* BrOKE
+			double setMark = marks.get(i).getMinuteMark()/60;
+			setMark = Math.round(setMark * 100);
+			setMark /= 100;
+			String len = String.valueOf(setMark);
+			
+			// BG FOR TIME
+			g2D.setColor(Color.white);
+			g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*len.length())/2), midPoint+arrowScale, timeTextScale*len.length(), timeHeight);
+			g2D.setColor(Color.black);
+			g2D.drawString(Integer.toString(marks.get(i).getMinuteMark()), 
+						marks.get(i).getLocationMark()
+						, midPoint+arrowScale*2);
+			*/
+		} 		
 		// Draw arrow that scales with thickness of SeekBar
 		g2D.setColor(Color.red);
 		Polygon arrowPoly = new Polygon(new int[] {timeLocation,timeLocation+arrowScale,timeLocation}, new int[] {midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
