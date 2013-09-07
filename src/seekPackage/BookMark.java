@@ -2,14 +2,18 @@
 package seekPackage;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
-public class BookMark extends JComponent implements MouseListener{
+public class BookMark {
 	// Time location in seconds
-	private double timeMark;
+	private int timeMark;
+	// True PX location on SeekBar
+	private int locationMark;
 	// TODO FIGUREOUT WHY I WANTED AN ID (FOR SQL DATABASE AND CONNECTIONS?!)
 	private int markID;
 	// Description of BookMark (time/name)
@@ -46,6 +50,10 @@ public class BookMark extends JComponent implements MouseListener{
 		timeMark = minuteLocation;
 	}
 	
+	public void setLocationMark(int location){
+		locationMark = location;
+	}
+	
 	public void setName(String name) {
 		nameString = name;
 	}
@@ -54,11 +62,19 @@ public class BookMark extends JComponent implements MouseListener{
 		color = colorMark;
 	}
 	
-	public double getMinuteMark() {
+	public Color getColor() {
+		return color;
+	}
+	
+	public int getMinuteMark() {
 		return timeMark;
 	}
 	
-	public String getName() {
+	public int getLocationMark() {
+		return locationMark;
+	}
+	
+	public String getTipName() {
 		return nameString;
 	}
 
