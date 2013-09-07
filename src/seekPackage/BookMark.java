@@ -1,5 +1,5 @@
 // By Michael Wasylyk
-package wSeekBar;
+package seekPackage;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;

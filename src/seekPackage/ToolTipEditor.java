@@ -1,5 +1,5 @@
 // By Michael Wasylyk
-package wSeekBar;
+package seekPackage;
 
 public class ToolTipEditor {
 	//TODO show ToolTipEditor with time mark and name along with delete button

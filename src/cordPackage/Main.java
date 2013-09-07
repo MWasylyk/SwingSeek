@@ -7,10 +7,10 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import wSeekBar.MSeekBar;
+import seekPackage.SeekBar;
 
 public class Main extends JFrame {
-	MSeekBar seekBar = new MSeekBar();
+	SeekBar seekBar = new SeekBar();
 
 	public static void main(String[] args) {
 		// Instantiate the JFrame object
