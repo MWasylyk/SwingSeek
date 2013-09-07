@@ -40,7 +40,7 @@ public class Main extends JFrame {
 		// Set location of seekBar
 		seekBar.setLocation(20, 200);
 		// Set size of seekBar
-		seekBar.setSize(250, 20);
+		seekBar.setSize(250, 25);
 		
 		// Add JComponents to the main panel and the JFrame
 		mainPanel.add(seekBar);
