@@ -15,6 +15,9 @@ public class BookMark extends Rectangle{
 	private String nameString;
 	// Add coloring to BookMarks for easier viewing
 	private Color color;
+	// Calculate pos or set at mouse
+	private boolean calc;
+	
 	
 	public BookMark(){
 		timeMark = 1;
@@ -27,19 +30,14 @@ public class BookMark extends Rectangle{
 		nameString = Integer.toString(timeMark);
 		color = Color.BLUE;
 	}
-	// TODO add color picker in MSeekBar and feed to constructor
-	public BookMark(int timeMark, Color color){
+	public BookMark(int timeMark, boolean isCalc, Color color){
+		calc = isCalc;
 		this.timeMark = timeMark;
 		nameString = Integer.toString(timeMark);
 		this.color = color;
-	}	
-	
-	public BookMark(int timeMark, int markID, String nameString, Color color){
-		this.timeMark = timeMark;
-		this.markID = markID;
-		this.nameString = nameString;
-		this.color = color;
 	}
+	// TODO add color picker in MSeekBar and feed to constructor
+
 	
 	public void setMinuteMark(int minuteLocation) {
 		timeMark = minuteLocation;
@@ -75,5 +73,13 @@ public class BookMark extends Rectangle{
 	
 	public void setTipName(String name) {
 		nameString = name;
+	}
+
+	public boolean isCalc() {
+		return calc;
+	}
+
+	public void setCalc(boolean calc) {
+		this.calc = calc;
 	}
 }

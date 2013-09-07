@@ -42,8 +42,8 @@ public class SeekBar extends JComponent implements MouseListener{
 		this.setDoubleBuffered(true);
 		
 		//FOR TESTING
-		marks.add(new BookMark(50, Color.green));
-		marks.add(new BookMark(70, Color.green));
+		marks.add(new BookMark(50, true, Color.green));
+		marks.add(new BookMark(70, true, Color.green));
 		
 		// Set Size of SeekBar to the preferred size
 		this.setSize(this.getPreferredSize());
@@ -79,7 +79,7 @@ public class SeekBar extends JComponent implements MouseListener{
 		
 		// Draw arrow that scales with thickness of SeekBar
 		g2D.setColor(Color.red);
-		Polygon arrowPoly = new Polygon(new int[] {timeLocation,arrowScale+timeLocation,timeLocation}, new int[] {midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
+		Polygon arrowPoly = new Polygon(new int[] {timeLocation,timeLocation+arrowScale,timeLocation}, new int[] {midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
 		g2D.fillPolygon(arrowPoly);
 		
 	}
@@ -144,7 +144,11 @@ public class SeekBar extends JComponent implements MouseListener{
 	// Set true PX locations of BookMarks in marks ArrayList
 	private void recalcBookMarks(){
 		for(int i = 0; i < marks.size(); i ++) {
-			marks.get(i).setLocationMark(getRequestedLocation(marks.get(i).getMinuteMark()));
+			if(marks.get(i).isCalc()){
+				marks.get(i).setLocationMark(getRequestedLocation(marks.get(i).getMinuteMark()));
+			} else {
+				marks.get(i).setLocationMark(marks.get(i).getMinuteMark());
+			}
 		}
 	}
 	
@@ -158,17 +162,24 @@ public class SeekBar extends JComponent implements MouseListener{
 		return -1;
 	}
 
-	public void mouseClicked(MouseEvent arg0) {
+	public void mousePressed(MouseEvent arg0) {
 		int x = arg0.getX(), y = arg0.getY();
 		if(clickedOnMark(x,y) >= 0) {
 			// TODO ADD FINAL BOOKMARK SETTING
-			String markName = JOptionPane.showInputDialog("Set BookMark name");
+			// TODO FIGURE OUT WHICH DIALOG I WANT/ REMOVE
+			String markName = JOptionPane.showInputDialog("Set BookMark name", JOptionPane.OK_OPTION);
 			double setMarkName = Double.parseDouble(marks.get(clickedOnMark(x,y)).getTipName())/60;
 			setMarkName = Math.round(setMarkName * 100);
 			setMarkName = setMarkName/100;
 			markName = String.valueOf(setMarkName) + ", " + markName;
-			System.out.printf( markName);
-			
+			System.out.println(markName);
+		} else {
+			// Add BookMark at Mouse Location
+			marks.add(new BookMark(x, false, Color.GRAY));
+			// Add BookMark under current Seek Location
+			//marks.add(new BookMark(timeLocation, false, Color.GRAY));
+			recalcBookMarks();
+			repaint();
 		}
 	}
 
@@ -184,14 +195,15 @@ public class SeekBar extends JComponent implements MouseListener{
 		
 	}
 
+
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
+	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
