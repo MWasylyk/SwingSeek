@@ -13,18 +13,18 @@ import javax.swing.JComponent;
 
 public class SeekBar extends JComponent {
 	// Time location in seconds
-	double timeLocation;
-	// TODO FIGURE OUT IF SIZE VARS ARE NEEDED
-	int sizeX = 100,sizeY = 20;
-	// Width of seek bar used for calculating marker location
-	int sizeInPx;
+	int timeLocation;
+	// If SeekBar changes in size remember requested location for recalculation
+	int requestedLocation;
+	// Max size of SeekBar in seconds
+	int maxTime;
 	// PX from left edge 
 	int seekLeftOffset = 10;
 	// Height in PX used for rendering
 	int seekThickness = 5;
 	// Scale for arrow rendering
 	int arrowScale = seekThickness+2;
-	// midPoint point for seekBar rendering
+	// midPoint point for SeekBar rendering
 	int midPoint = getHeight()/2;
 	// ArrayList to hold BookMark objects
 	// TODO will be used for loading and saving of marker location
@@ -32,57 +32,67 @@ public class SeekBar extends JComponent {
 	
 	
 	public SeekBar(){
-		// Set Size of seekBar to the preferred size
+		// Set Size of SeekBar to the preferred size
 		this.setSize(this.getPreferredSize());
-		// Recalculate midpoint of seekBar for rendering 
+		// Set max size of SeekBar in seconds
+		maxTime = 300;
+		// Recalculate midpoint of SeekBar for rendering 
 		midPoint = getHeight()/2;
-		// Calculate length of seekBar in PX
-		sizeInPx = getSeekLength();
+		
+		// Set seek location to the begging
+		setSeekLocation(0);
 	}
 	
-	// Paint seekBar and ArrayList of BookMarks
+	// Paint SeekBar and ArrayList of BookMarks
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
 
-		// Draw seekBar BG
+		// Draw SeekBar BG
 		g2D.setColor(Color.black);
 		g2D.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
-		// Draw seekBar 
+		// Draw SeekBar 
 		g2D.setColor(Color.white);
 		// Left offset, vertical = (height/2 - seekThickness/2), length = (width - (left offset*2)), seekThicknes
 		g2D.fillRect(seekLeftOffset, midPoint - (seekThickness/2), getWidth()-(seekLeftOffset*2), seekThickness);
 		
-		// Draw arrow that scales with thickness of seekBar
+		// Draw arrow that scales with thickness of SeekBar
 		g2D.setColor(Color.red);
-		Polygon tri = new Polygon(new int[] {0,arrowScale,0}, new int[] {0+midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
-		g2D.fillPolygon(tri);
+		Polygon arrowPoly = new Polygon(new int[] {timeLocation,arrowScale+timeLocation,timeLocation}, new int[] {midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
+		g2D.fillPolygon(arrowPoly);
 	}
 	
 	public void setSize(int width, int height){
 		super.setSize(width, height);
-		// Recalculate midpoint of seekBar for rendering 
+		// Recalculate midpoint of SeekBar for rendering 
 		midPoint = getHeight()/2;
-		
-		// Recalculate length of seekBar after resize
-		sizeInPx = getSeekLength();
+		// Recalculate location of current time
+		setSeekLocation(requestedLocation);
 	}
 	
 	public void setSize(Dimension size){
 		super.setSize(size);
-		// Recalculate length of seekBar after resize
-		sizeInPx = getSeekLength();
+		// Recalculate midpoint of SeekBar for rendering 
+		midPoint = getHeight()/2;
+		// Recalculate location of current time
+		setSeekLocation(requestedLocation);
 	}
 	
 	// Move seek marker to current time and repaint
-	public void setSeekLocation(double timeLocation){
-		this.timeLocation = timeLocation;
+	public void setSeekLocation(int time){
+		requestedLocation = time;
+		// Width of seek bar used for calculating marker location
+		int sizeInPx = getSeekLength();
+		
+		double tempTime;
+		tempTime = (double)requestedLocation/maxTime * sizeInPx;
+		timeLocation = (int)(Math.round(tempTime) + seekLeftOffset);
 		repaint();
 	}
 	
 	private int getSeekLength() {
-		return getWidth() - seekLeftOffset*3;
+		return getWidth() - seekLeftOffset*2;
 	}
 	
 	
