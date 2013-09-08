@@ -2,7 +2,13 @@
 package seekPackage;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
 
 public class BookMark extends Rectangle{
 	// Time location in seconds
@@ -17,8 +23,15 @@ public class BookMark extends Rectangle{
 	private Color color;
 	// Calculate pos or set at mouse
 	private boolean calc;
-	
-	
+	/* WIP RENDERING OPTIMIZATION
+	// Font used for GlyphVector rendering
+	private Font sysFont = new Font("Dialog", Font.PLAIN, 12);
+	// Used for font sizing
+	FontRenderContext fontRendering;
+	// FORTESTING
+	GlyphVector textVector;
+	private int shapeX, shapeY;
+	*/
 	public BookMark(){
 		timeMark = 1;
 		nameString = Integer.toString(timeMark);
@@ -37,8 +50,31 @@ public class BookMark extends Rectangle{
 		nameString = Integer.toString(timeMark);
 		this.color = color;
 	}
-	// TODO add color picker in MSeekBar and feed to constructor
-
+	/*// WIP RENDERING OPIMIZATION
+	public Shape getLabelMark(Graphics2D g2D){
+		fontRendering = g2D.getFontMetrics(sysFont).getFontRenderContext();
+		textVector = sysFont.createGlyphVector(fontRendering, String.valueOf(roundTwoDec(timeMark/60.0)));
+		return textVector.getOutline();
+	}
+	
+	public void setLabelLocation(int x, int y){
+		shapeX = x;
+		shapeY = y;
+	}
+	
+	public AffineTransform getTransform(){
+		AffineTransform af = new AffineTransform();
+		af.translate(shapeX, shapeY);
+		
+		return af;
+	}
+	*/
+	// Rounds a double to 2 dec places for easy viewing
+	private double roundTwoDec(double temp){
+		temp = Math.round(temp * 100.0);
+		temp /= 100.0;
+		return temp;
+	}	
 	
 	public void setTimeMark(int timeLocation) {
 		timeMark = timeLocation;
