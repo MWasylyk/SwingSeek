@@ -56,6 +56,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		midPoint = getHeight()/2;		
 		// Set seek location to the begging
 		timeLocation = getRequestedLocation(0);
+
+		//FOR TESTING
+		//marks.add(new BookMark(150));
+		//marks.add(new BookMark(90));
 		
 		// Set location and size of seek bar rectangle
 		seekRect = new Rectangle();
@@ -208,9 +212,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		for(int i = 0; i < marks.size(); i ++) {
 			if(marks.get(i).contains(x, y)) {
 				return i;
-			} else if(seekRect.contains(x,y)){
-				return -2;
 			}
+		}
+		if(seekRect.contains(x,y)){
+			return -2;
 		}
 		return -1;
 	}
