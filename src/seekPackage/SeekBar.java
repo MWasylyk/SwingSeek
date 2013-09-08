@@ -91,7 +91,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 			g2D.setColor(Color.white);
 			g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*len.length())/2), midPoint+arrowScale, timeTextScale*len.length(), timeHeight);
 			g2D.setColor(Color.black);
-			g2D.drawString(Integer.toString(marks.get(i).getMinuteMark()), 
+			double temp = (double)marks.get(i).getMinuteMark()/60;
+			temp = Math.round(temp * 100);
+			temp /=100;
+			g2D.drawString(Double.toString(temp), 
 						marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*len.length())/2)
 						, midPoint+arrowScale*2);
 			

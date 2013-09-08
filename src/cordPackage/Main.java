@@ -3,7 +3,7 @@ package cordPackage;
 
 import java.awt.Color;
 import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import seekPackage.SeekBar;
 
 public class Main {
@@ -24,32 +24,28 @@ public class Main {
 	}
 	
 	public void init(){
-		// Layeredpane used for laying out jcomponents
-		
 		// Panel for holding main JComponents
-		JLayeredPane mainPane = new JLayeredPane();
-		mainFrame.setSize(300, 300);
+		JPanel mainPanel = new JPanel();
+		mainFrame.setSize(600, 150);
 		
 		// Setup code for the main panel
-		mainPane.setLayout(null);
-		mainPane.setLocation(0,0);
-		mainPane.setSize(300, 300);
-		mainPane.setOpaque(true);
-		mainPane.setBackground(Color.LIGHT_GRAY);
+		mainPanel.setLayout(null);
+		mainPanel.setOpaque(true);
+		mainPanel.setBackground(Color.LIGHT_GRAY);
 		
 		seekBar.addMouseListener(seekBar);
 		
 		// Set location of seekBar
-		seekBar.setLocation(20, 200);
+		seekBar.setLocation(25, 25);
 		
 		// Set size of seekBar
-		seekBar.setSize(250, 65);
+		seekBar.setSize(550, 65);
 		seekBar.setMaxTime(300);
 		seekBar.setSeekLocation(300);
 		
 		// Add JComponents to the main panel and the JFrame
-		mainPane.add(seekBar,0);
-		mainFrame.add(mainPane);
+		mainPanel.add(seekBar);
+		mainFrame.add(mainPanel);
 		mainFrame.setResizable(false);
 	}
 
