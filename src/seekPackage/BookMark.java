@@ -68,13 +68,13 @@ public class BookMark extends Rectangle{
 		
 		return af;
 	}
-	*/
 	// Rounds a double to 2 dec places for easy viewing
 	private double roundTwoDec(double temp){
 		temp = Math.round(temp * 100.0);
 		temp /= 100.0;
 		return temp;
 	}	
+	*/
 	
 	public void setTimeMark(int timeLocation) {
 		timeMark = timeLocation;
