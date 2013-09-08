@@ -39,25 +39,24 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	// VARS FOR TIP TIME VIEW
 	int timeHeight = 10;
 	// SIZE TO * FOR NUMBER OF CHARS
-	int timeTextScale = 12;
+	int timeTextScale = 6;
 	// ArrayList to hold BookMark objects
 	// TODO will be used for loading and saving of marker location
 	ArrayList<BookMark> marks = new ArrayList<BookMark>();
 	
 	public SeekBar(){
 		this.setDoubleBuffered(true);
-		
-		//FOR TESTING
-		marks.add(new BookMark(150));
-		
-		// Set Size of SeekBar to the preferred size
-		this.setSize(this.getPreferredSize());
 		// Set max size of SeekBar in seconds
 		maxTime = 300;
 		// Recalculate midpoint of SeekBar for rendering 
 		midPoint = getHeight()/2;		
 		// Set seek location to the begging
 		timeLocation = getRequestedLocation(0);
+
+		//FOR TESTING
+		marks.add(new BookMark(150));
+		marks.add(new BookMark(90));
+		
 		recalcBookMarks();
 	}
 	
@@ -81,21 +80,15 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 			marks.get(i).setBounds(marks.get(i).getLocationMark() - markThickness, midPoint-(markHeight/2), markThickness, markHeight);
 			g2D.fill(marks.get(i));
 
-			// BrOKE
-			double setMark = marks.get(i).getMinuteMark()/60;
-			setMark = Math.round(setMark * 100);
-			setMark /= 100;
-			String len = String.valueOf(setMark);
+			String tempS = String.valueOf(roundTwoDec(marks.get(i).getTimeMark()/60.0));
 			
 			// BG FOR TIME
 			g2D.setColor(Color.white);
-			g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*len.length())/2), midPoint+arrowScale, timeTextScale*len.length(), timeHeight);
+			g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2), midPoint+arrowScale, timeTextScale*tempS.length(), timeHeight);
 			g2D.setColor(Color.black);
-			double temp = (double)marks.get(i).getMinuteMark()/60;
-			temp = Math.round(temp * 100);
-			temp /=100;
-			g2D.drawString(Double.toString(temp), 
-						marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*len.length())/2)
+			
+			g2D.drawString(String.valueOf(roundTwoDec(marks.get(i).getTimeMark()/60.0)), 
+						marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2)
 						, midPoint+arrowScale*2);
 			
 			
@@ -105,6 +98,16 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		Polygon arrowPoly = new Polygon(new int[] {timeLocation,timeLocation+arrowScale,timeLocation}, new int[] {midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
 		g2D.fillPolygon(arrowPoly);
 		
+		// Draw current time
+		g2D.setColor(Color.red);
+		g2D.drawString(String.valueOf(roundTwoDec(requestedLocation/60.0)), timeLocation, midPoint-arrowScale-3);
+		
+	}
+	
+	private double roundTwoDec(double temp){
+		temp = Math.round(temp * 100.0);
+		temp /= 100.0;
+		return temp;
 	}
 	
 	public void setMaxTime(int timeInSec){
@@ -136,12 +139,11 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	
 	// Calculates location of requested time based on SeekBar size
 	public int getRequestedLocation(int time){
-		requestedLocation = time;
 		// Width of Seekbar used for calculating marker location
 		sizeInPx = getSeekLength();
 		
 		double tempTime;
-		tempTime = (double)requestedLocation/maxTime * sizeInPx;
+		tempTime = (double)time/maxTime * sizeInPx;
 		tempTime = (int)(Math.round(tempTime) + seekLeftOffset);
 		repaint();
 		return (int)tempTime;
@@ -149,6 +151,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	
 	// Subtract size of arrow pointer to find seek location
 	public void setSeekLocation(int seekLoc){
+		requestedLocation = seekLoc;
 		timeLocation = getRequestedLocation(seekLoc) - arrowScale;
 		repaint();
 	}
@@ -166,10 +169,11 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	private void recalcBookMarks(){
 		for(int i = 0; i < marks.size(); i ++) {
 			if(marks.get(i).isCalc()){
-				marks.get(i).setLocationMark(getRequestedLocation(marks.get(i).getMinuteMark()));
+				System.out.println(marks.get(i).getTimeMark());
+				marks.get(i).setLocationMark(getRequestedLocation(marks.get(i).getTimeMark()));
 			} else {
-				double temp = (double)(marks.get(i).getLocationMark()-seekLeftOffset)/sizeInPx * maxTime;
-				marks.get(i).setTimeMark((int)temp);
+				double tempM = (double)(marks.get(i).getLocationMark()-seekLeftOffset)/sizeInPx * maxTime;
+				marks.get(i).setTimeMark((int)tempM);
 			}
 		}
 	}

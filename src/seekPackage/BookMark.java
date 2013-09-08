@@ -60,7 +60,7 @@ public class BookMark extends Rectangle{
 		return color;
 	}
 	
-	public int getMinuteMark() {
+	public int getTimeMark() {
 		return timeMark;
 	}
 	
