@@ -32,21 +32,22 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	// PX from left edge
 	int seekLeftOffset = 10;
 	// Height in PX used for rendering
-	int seekThickness = 5;
+	int seekThickness = 9;
 	// Scale for arrow rendering
-	int arrowScale = seekThickness+4;
+	int arrowScale = seekThickness+6;
 	// midPoint point for SeekBar rendering
 	int midPoint = getHeight()/2;
 	// BookMark fill thickness
-	int markThickness = 6;
+	int markThickness = 10;
 	// BookMark fill height
-	int markHeight = 20;
+	int markHeight = 33;
 	// VARS FOR TIP TIME VIEW
 	int timeHeight = 11;
 	// SIZE TO * FOR NUMBER OF CHARS
 	int timeTextScale = 6;
 	// Seek bar rectangle for easier rendering and mouse events
 	private Rectangle seekRect;
+	private Color seekBarBG = Color.DARK_GRAY, seekBarColor = Color.LIGHT_GRAY; 
 	// ArrayList to hold BookMark objects
 	// TODO will be used for loading and saving of marker location
 	ArrayList<BookMark> marks = new ArrayList<BookMark>();
@@ -59,15 +60,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		midPoint = getHeight()/2;		
 		// Set seek location to the begging
 		timeLocation = getRequestedLocation(0);
-
-		//FOR TESTING
-		//marks.add(new BookMark(150));
-		//marks.add(new BookMark(90));
 		
 		// Set location and size of seek bar rectangle
 		seekRect = new Rectangle();
 		// Left offset, vertical = (height/2 - seekThickness/2), length = (width - (left offset*2)), seekThicknes
-		// OLD g2D.fillRect(seekLeftOffset, midPoint - (seekThickness/2), getWidth()-(seekLeftOffset*2), seekThickness);
 		seekRect.setBounds(seekLeftOffset, midPoint - (seekThickness/2), getWidth()-(seekLeftOffset*2), seekThickness);
 		
 		recalcBookMarks();
@@ -81,16 +77,20 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		Graphics2D g2D = (Graphics2D) g;
 
 		// Draw SeekBar BG
-		g2D.setColor(Color.darkGray);
+		g2D.setColor(seekBarBG);
 		g2D.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 		// Draw SeekBar 
-		g2D.setColor(Color.white);
+		g2D.setColor(seekBarColor);
 		g2D.fill(seekRect);
 		
 		// Draw BookMarks 
 		for(int i = 0; i < marks.size(); i++) {
-			g2D.setColor(marks.get(i).getColor());
+			if(marks.get(i).wasClicked()) {
+				g2D.setColor(Color.blue);
+			} else {
+				g2D.setColor(marks.get(i).getColor());	
+			}
 			//marks.get(i).setBounds(marks.get(i).getLocationMark() - markThickness, midPoint-(markHeight/2), markThickness, markHeight);
 			g2D.fill(marks.get(i));
 			
@@ -100,21 +100,20 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		
 			// String used to find size of text box needed to draw
 			String tempS = String.valueOf(tempTime);
-			
-			if(marks.get(i).isMousedOver()) {
-				// BG for time pop-up
-				g2D.setColor(Color.white);
+
+			// BG for time pop-up
+			if(marks.get(i).isMousedOver() || marks.get(i).wasClicked()) {
+				g2D.setColor(Color.black);
 				g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2)
-							, midPoint-markHeight
+							, (int) (marks.get(i).getY()-timeHeight)
 							, timeTextScale*tempS.length()
 							, timeHeight);
 				
 				// Time text
-				g2D.setColor(Color.black);
-
+				g2D.setColor(Color.white);
 				g2D.drawString(String.valueOf(tempTime), 
 						marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2)
-						, midPoint-markHeight/2);
+						, (int) (marks.get(i).getY()-1));
 			}
 			/* WIP RENDERING OPTIMIZATION
 			AffineTransform backUp = g2D.getTransform();
@@ -125,17 +124,17 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		} 		
 		
 		// Draw arrow that scales with thickness of SeekBar
-		g2D.setColor(Color.red);
+		g2D.setColor(Color.green);
 		Polygon arrowPoly = new Polygon(new int[] {timeLocation,timeLocation+arrowScale,timeLocation}, new int[] {midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
 		g2D.fillPolygon(arrowPoly);
 				
 		// Draw current time
-		g2D.setColor(Color.red);
+		g2D.setColor(Color.white);
 		g2D.drawString(String.valueOf(timeInMin), timeLocation, midPoint-arrowScale-3);
 		
 	}
 	
-	// Rounds a double to 2 dec places for easy viewing
+	// Rounds a double to 2 decimal places for easy viewing
 	private double roundTwoDec(double temp){
 		temp = Math.round(temp * 100.0);
 		temp /= 100.0;
@@ -242,11 +241,35 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		if(isMouseOnMark(x,y) >= 0) {
 			// TODO ADD FINAL BOOKMARK SETTING
 			// TODO FIGURE OUT WHICH DIALOG I WANT/ REMOVE
+			for(int i = 0; i < marks.size(); i ++) {
+				marks.get(i).setWasClicked(false);
+			}
+			marks.get(isMouseOnMark(x,y)).setWasClicked(true);
+			repaint();
 		} else if(isMouseOnMark(x,y) == -2){
-			// Add BookMark at Mouse Location'
-			marks.add(new BookMark(x, false, Color.cyan));
+			for(int i = 0; i < marks.size(); i ++) {
+				marks.get(i).setWasClicked(false);
+			}
+			// Add BookMark at Mouse Location
+			BookMark tempBook = new BookMark(x, false, Color.cyan);
+			tempBook.setWasClicked(true);
+			marks.add(tempBook);
 			recalcBookMarks();
 			repaint();
+		}
+	}
+
+	public void mouseMoved(MouseEvent arg0) {
+		int x = arg0.getX(), y = arg0.getY();
+		// If the mouse moved over a BookMark set it to render its time pop-up else set to false
+		if(isMouseOnMark(x,y) >= 0) {
+			marks.get(isMouseOnMark(x,y)).setMousedOver(true);
+			repaint();
+		} else {
+			for(int i = 0; i < marks.size(); i ++) {
+				marks.get(i).setMousedOver(false);
+				repaint();
+			}
 		}
 	}
 
@@ -278,19 +301,6 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	public void mouseDragged(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	public void mouseMoved(MouseEvent arg0) {
-		int x = arg0.getX(), y = arg0.getY();
-		if(isMouseOnMark(x,y) >= 0) {
-			marks.get(isMouseOnMark(x,y)).setMousedOver(true);
-			repaint();
-		} else {
-			for(int i = 0; i < marks.size(); i ++) {
-				marks.get(i).setMousedOver(false);
-				repaint();
-			}
-		}
 	}
 
 }
