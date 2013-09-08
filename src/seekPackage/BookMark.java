@@ -27,20 +27,21 @@ public class BookMark extends Rectangle{
 	
 	public BookMark(int timeMark){
 		this.timeMark = timeMark;
+		calc = true;
 		nameString = Integer.toString(timeMark);
-		color = Color.BLUE;
+		color = Color.green;
 	}
-	public BookMark(int timeMark, boolean isCalc, Color color){
+	public BookMark(int locMark,boolean isCalc, Color color){
 		calc = isCalc;
-		this.timeMark = timeMark;
+		locationMark = locMark;
 		nameString = Integer.toString(timeMark);
 		this.color = color;
 	}
 	// TODO add color picker in MSeekBar and feed to constructor
 
 	
-	public void setMinuteMark(int minuteLocation) {
-		timeMark = minuteLocation;
+	public void setTimeMark(int timeLocation) {
+		timeMark = timeLocation;
 	}
 	
 	public void setLocationMark(int location){

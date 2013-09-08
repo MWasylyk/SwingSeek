@@ -8,19 +8,22 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-public class SeekBar extends JComponent implements MouseListener{
+public class SeekBar extends JComponent implements MouseListener, MouseMotionListener{
 	// Time location in seconds
 	int timeLocation;
+	// Size of seek bar
+	int sizeInPx;
 	// If SeekBar changes in size remember requested location for recalculation
 	int requestedLocation;
 	// Max size of SeekBar in seconds
-	int maxTime;
+	double maxTime;
 	// PX from left edge
 	int seekLeftOffset = 10;
 	// Height in PX used for rendering
@@ -45,7 +48,7 @@ public class SeekBar extends JComponent implements MouseListener{
 		this.setDoubleBuffered(true);
 		
 		//FOR TESTING
-		marks.add(new BookMark(50, true, Color.green));
+		marks.add(new BookMark(150));
 		
 		// Set Size of SeekBar to the preferred size
 		this.setSize(this.getPreferredSize());
@@ -78,7 +81,7 @@ public class SeekBar extends JComponent implements MouseListener{
 			marks.get(i).setBounds(marks.get(i).getLocationMark() - markThickness, midPoint-(markHeight/2), markThickness, markHeight);
 			g2D.fill(marks.get(i));
 
-			/* BrOKE
+			// BrOKE
 			double setMark = marks.get(i).getMinuteMark()/60;
 			setMark = Math.round(setMark * 100);
 			setMark /= 100;
@@ -89,9 +92,10 @@ public class SeekBar extends JComponent implements MouseListener{
 			g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*len.length())/2), midPoint+arrowScale, timeTextScale*len.length(), timeHeight);
 			g2D.setColor(Color.black);
 			g2D.drawString(Integer.toString(marks.get(i).getMinuteMark()), 
-						marks.get(i).getLocationMark()
+						marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*len.length())/2)
 						, midPoint+arrowScale*2);
-			*/
+			
+			
 		} 		
 		// Draw arrow that scales with thickness of SeekBar
 		g2D.setColor(Color.red);
@@ -131,7 +135,7 @@ public class SeekBar extends JComponent implements MouseListener{
 	public int getRequestedLocation(int time){
 		requestedLocation = time;
 		// Width of Seekbar used for calculating marker location
-		int sizeInPx = getSeekLength();
+		sizeInPx = getSeekLength();
 		
 		double tempTime;
 		tempTime = (double)requestedLocation/maxTime * sizeInPx;
@@ -150,12 +154,10 @@ public class SeekBar extends JComponent implements MouseListener{
 		return getWidth() - seekLeftOffset*2;
 	}
 	
-	
 	//TODO Find smallest size of seek bar possible
 	public Dimension getPreferredSize() {
         return new Dimension(100, 20);
     }
-	
 
 	// Set true PX locations of BookMarks in marks ArrayList
 	private void recalcBookMarks(){
@@ -163,7 +165,8 @@ public class SeekBar extends JComponent implements MouseListener{
 			if(marks.get(i).isCalc()){
 				marks.get(i).setLocationMark(getRequestedLocation(marks.get(i).getMinuteMark()));
 			} else {
-				marks.get(i).setLocationMark(marks.get(i).getMinuteMark());
+				double temp = (double)(marks.get(i).getLocationMark()-seekLeftOffset)/sizeInPx * maxTime;
+				marks.get(i).setTimeMark((int)temp);
 			}
 		}
 	}
@@ -190,10 +193,8 @@ public class SeekBar extends JComponent implements MouseListener{
 			markName = String.valueOf(setMarkName) + ", " + markName;
 			System.out.println(markName);
 		} else {
-			// Add BookMark at Mouse Location
+			// Add BookMark at Mouse Location'
 			marks.add(new BookMark(x, false, Color.GRAY));
-			// Add BookMark under current Seek Location
-			//marks.add(new BookMark(timeLocation, false, Color.GRAY));
 			recalcBookMarks();
 			repaint();
 		}
@@ -222,6 +223,20 @@ public class SeekBar extends JComponent implements MouseListener{
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		int x = arg0.getX(), y = arg0.getY();
+		if(clickedOnMark(x,y) >= 0) {
+			
+		}
 	}
 
 }
