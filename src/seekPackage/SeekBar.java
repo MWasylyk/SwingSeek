@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -24,6 +25,8 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	int sizeInPx;
 	// If SeekBar changes in size remember requested location for recalculation
 	int requestedLocation;
+	// Time in minutes
+	double timeInMin;
 	// Max size of SeekBar in seconds
 	double maxTime;
 	// PX from left edge
@@ -39,7 +42,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	// BookMark fill height
 	int markHeight = 20;
 	// VARS FOR TIP TIME VIEW
-	int timeHeight = 10;
+	int timeHeight = 11;
 	// SIZE TO * FOR NUMBER OF CHARS
 	int timeTextScale = 6;
 	// Seek bar rectangle for easier rendering and mouse events
@@ -91,32 +94,44 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 			//marks.get(i).setBounds(marks.get(i).getLocationMark() - markThickness, midPoint-(markHeight/2), markThickness, markHeight);
 			g2D.fill(marks.get(i));
 			
+			// New correct way to find time in min.sec
+			double tempTime = roundTwoDec(TimeUnit.SECONDS.toMinutes(marks.get(i).getTimeMark()) 
+							+ (TimeUnit.SECONDS.toSeconds(marks.get(i).getTimeMark())%60.0/100.0));
+		
 			// String used to find size of text box needed to draw
-			String tempS = String.valueOf(roundTwoDec(marks.get(i).getTimeMark()/60.0));
-			// BG for time pop-up
-			g2D.setColor(Color.white);
-			g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2), midPoint+arrowScale, timeTextScale*tempS.length(), timeHeight);
-			// Time text
-			g2D.setColor(Color.black);
+			String tempS = String.valueOf(tempTime);
+			
+			if(marks.get(i).isMousedOver()) {
+				// BG for time pop-up
+				g2D.setColor(Color.white);
+				g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2)
+							, midPoint-markHeight
+							, timeTextScale*tempS.length()
+							, timeHeight);
+				
+				// Time text
+				g2D.setColor(Color.black);
+
+				g2D.drawString(String.valueOf(tempTime), 
+						marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2)
+						, midPoint-markHeight/2);
+			}
 			/* WIP RENDERING OPTIMIZATION
 			AffineTransform backUp = g2D.getTransform();
 			g2D.transform(marks.get(i).getTransform());
 			g2D.draw(marks.get(i).getLabelMark(g2D));
 			g2D.transform(backUp);
 			*/
-			g2D.drawString(String.valueOf(roundTwoDec(marks.get(i).getTimeMark()/60.0)), 
-				marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2)
-				, midPoint+arrowScale*2);
 		} 		
 		
 		// Draw arrow that scales with thickness of SeekBar
 		g2D.setColor(Color.red);
 		Polygon arrowPoly = new Polygon(new int[] {timeLocation,timeLocation+arrowScale,timeLocation}, new int[] {midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
 		g2D.fillPolygon(arrowPoly);
-		
+				
 		// Draw current time
 		g2D.setColor(Color.red);
-		g2D.drawString(String.valueOf(roundTwoDec(requestedLocation/60.0)), timeLocation, midPoint-arrowScale-3);
+		g2D.drawString(String.valueOf(timeInMin), timeLocation, midPoint-arrowScale-3);
 		
 	}
 	
@@ -175,6 +190,8 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	// Subtract size of arrow pointer to find seek location
 	public void setSeekLocation(int seekLoc){
 		requestedLocation = seekLoc;
+		timeInMin = roundTwoDec(TimeUnit.SECONDS.toMinutes(requestedLocation) 
+				  + (TimeUnit.SECONDS.toSeconds(requestedLocation)%60.0/100.0));
 		timeLocation = getRequestedLocation(seekLoc) - arrowScale;
 		repaint();
 	}
@@ -194,11 +211,11 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		for(int i = 0; i < marks.size(); i ++) {
 			// WIP RENDERING OPTIMIZATION
 			// marks.get(i).setLabelLocation(marks.get(i).getLocationMark()-(markThickness/2)-timeTextScale, midPoint+arrowScale*2);
-			
-			// If BookMark was manually, added reverse calculation
+						
 			if(marks.get(i).isCalc()){
 				marks.get(i).setLocationMark(getRequestedLocation(marks.get(i).getTimeMark()));
 			} else {
+				// If BookMark was manually, added reverse calculation
 				double tempM = (double)(marks.get(i).getLocationMark()-seekLeftOffset)/sizeInPx * maxTime;
 				marks.get(i).setTimeMark((int)tempM);
 			}
@@ -207,7 +224,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		}
 	}
 	
-	private int clickedOnMark(int x, int y){
+	private int isMouseOnMark(int x, int y){
 		// If mouse x,y is inside one of the BookMarks return which index the BookMark is located
 		for(int i = 0; i < marks.size(); i ++) {
 			if(marks.get(i).contains(x, y)) {
@@ -222,10 +239,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 
 	public void mousePressed(MouseEvent arg0) {
 		int x = arg0.getX(), y = arg0.getY();
-		if(clickedOnMark(x,y) >= 0) {
+		if(isMouseOnMark(x,y) >= 0) {
 			// TODO ADD FINAL BOOKMARK SETTING
 			// TODO FIGURE OUT WHICH DIALOG I WANT/ REMOVE
-		} else if(clickedOnMark(x,y) == -2){
+		} else if(isMouseOnMark(x,y) == -2){
 			// Add BookMark at Mouse Location'
 			marks.add(new BookMark(x, false, Color.cyan));
 			recalcBookMarks();
@@ -245,7 +262,6 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		
 	}
 
-
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -264,9 +280,17 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		
 	}
 
-	@Override
 	public void mouseMoved(MouseEvent arg0) {
-		
+		int x = arg0.getX(), y = arg0.getY();
+		if(isMouseOnMark(x,y) >= 0) {
+			marks.get(isMouseOnMark(x,y)).setMousedOver(true);
+			repaint();
+		} else {
+			for(int i = 0; i < marks.size(); i ++) {
+				marks.get(i).setMousedOver(false);
+				repaint();
+			}
+		}
 	}
 
 }

@@ -37,6 +37,7 @@ public class Main {
 		mainPanel.setBackground(Color.LIGHT_GRAY);
 		
 		seekBar.addMouseListener(seekBar);
+		seekBar.addMouseMotionListener(seekBar);
 		
 		// Set location of seekBar
 		seekBar.setLocation(25, 25);

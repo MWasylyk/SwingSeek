@@ -23,6 +23,8 @@ public class BookMark extends Rectangle{
 	private Color color;
 	// Calculate pos or set at mouse
 	private boolean calc;
+	// If mouse is over book mark render time
+	private boolean isMousedOver = false;
 	/* WIP RENDERING OPTIMIZATION
 	// Font used for GlyphVector rendering
 	private Font sysFont = new Font("Dialog", Font.PLAIN, 12);
@@ -118,5 +120,13 @@ public class BookMark extends Rectangle{
 
 	public void setCalc(boolean calc) {
 		this.calc = calc;
+	}
+
+	public boolean isMousedOver() {
+		return isMousedOver;
+	}
+
+	public void setMousedOver(boolean isMousedOver) {
+		this.isMousedOver = isMousedOver;
 	}
 }
