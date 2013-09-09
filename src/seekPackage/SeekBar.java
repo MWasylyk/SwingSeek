@@ -20,37 +20,59 @@ import javax.swing.SwingUtilities;
 
 public class SeekBar extends JComponent implements MouseListener, MouseMotionListener{
 	// Time location in seconds
-	int timeLocation;
+	private int timeLocation;
 	// Size of seek bar
-	int sizeInPx;
+	private int sizeInPx;
 	// If SeekBar changes in size remember requested location for recalculation
-	int requestedLocation;
+	private int requestedLocation;
 	// Time in minutes
-	double timeInMin;
+	private double timeInMin;
 	// Max size of SeekBar in seconds
-	double maxTime;
+	private double maxTime;
 	// PX from left edge
-	int seekLeftOffset = 10;
+	private int seekLeftOffset = 10;
 	// Height in PX used for rendering
-	int seekThickness = 9;
+	private int seekThickness = 9;
 	// Scale for arrow rendering
-	int arrowScale = seekThickness+6;
+	private int arrowScale = seekThickness+6;
 	// midPoint point for SeekBar rendering
-	int midPoint = getHeight()/2;
+	private int midPoint = getHeight()/2;
 	// BookMark fill thickness
-	int markThickness = 10;
+	private int markThickness = 10;
 	// BookMark fill height
-	int markHeight = 33;
+	private int markHeight = 33;
 	// VARS FOR TIP TIME VIEW
-	int timeHeight = 11;
+	private int timeHeight = 11;
 	// SIZE TO * FOR NUMBER OF CHARS
-	int timeTextScale = 6;
+	private int timeTextScale = 6;
 	// Seek bar rectangle for easier rendering and mouse events
 	private Rectangle seekRect;
+	// Colors used for rendering seek bar
 	private Color seekBarBG = Color.DARK_GRAY, seekBarColor = Color.LIGHT_GRAY; 
+	private int curColor = 0;
 	// ArrayList to hold BookMark objects
 	// TODO will be used for loading and saving of marker location
-	ArrayList<BookMark> marks = new ArrayList<BookMark>();
+	private ArrayList<BookMark> marks = new ArrayList<BookMark>();
+
+	// TODO FIX WHEN YOU HAVE TIME 
+	// TODO add color picker in MSeekBar and feed to constructor
+	private Color colPicker(){
+		if(curColor > 2) {
+			curColor = 0;
+		}
+		
+		if(curColor == 0) {
+			return Color.yellow;
+		} else if(curColor == 1) {
+			return Color.orange;
+		} else if(curColor == 2) {
+			return Color.red;
+		}
+		
+		curColor ++;
+		
+		return Color.white;
+	}
 	
 	public SeekBar(){
 		this.setDoubleBuffered(true);
@@ -68,9 +90,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		
 		recalcBookMarks();
 	}
-	
-	// TODO add color picker in MSeekBar and feed to constructor
-	
+		
 	// Paint SeekBar and ArrayList of BookMarks
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
