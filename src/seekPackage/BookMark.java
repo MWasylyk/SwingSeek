@@ -27,6 +27,9 @@ public class BookMark extends Rectangle{
 	private boolean isMousedOver = false;
 	// If bookmark was clicked change color and stay visible
 	private boolean wasClicked = false;
+
+	private int curColor = 0;
+	
 	/* WIP RENDERING OPTIMIZATION
 	// Font used for GlyphVector rendering
 	private Font sysFont = new Font("Dialog", Font.PLAIN, 12);
@@ -36,6 +39,25 @@ public class BookMark extends Rectangle{
 	GlyphVector textVector;
 	private int shapeX, shapeY;
 	*/
+	
+	// TODO FIX WHEN YOU HAVE TIME 
+	// TODO add color picker in MSeekBar and feed to constructor
+	private Color colPicker(){
+		if(curColor > 1) {
+			curColor = 0;
+		}
+		
+		if(curColor == 0) {
+			return Color.white;
+		} else if(curColor == 1) {
+			return Color.gray;
+		}
+		
+		curColor ++;
+		
+		return Color.white;
+	}
+	
 	public BookMark(){
 		timeMark = 1;
 		nameString = Integer.toString(timeMark);

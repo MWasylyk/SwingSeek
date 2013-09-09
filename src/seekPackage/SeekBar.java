@@ -49,30 +49,9 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	private Rectangle seekRect;
 	// Colors used for rendering seek bar
 	private Color seekBarBG = Color.DARK_GRAY, seekBarColor = Color.LIGHT_GRAY; 
-	private int curColor = 0;
 	// ArrayList to hold BookMark objects
 	// TODO will be used for loading and saving of marker location
 	private ArrayList<BookMark> marks = new ArrayList<BookMark>();
-
-	// TODO FIX WHEN YOU HAVE TIME 
-	// TODO add color picker in MSeekBar and feed to constructor
-	private Color colPicker(){
-		if(curColor > 2) {
-			curColor = 0;
-		}
-		
-		if(curColor == 0) {
-			return Color.yellow;
-		} else if(curColor == 1) {
-			return Color.orange;
-		} else if(curColor == 2) {
-			return Color.red;
-		}
-		
-		curColor ++;
-		
-		return Color.white;
-	}
 	
 	public SeekBar(){
 		this.setDoubleBuffered(true);
