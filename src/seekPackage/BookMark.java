@@ -28,7 +28,7 @@ public class BookMark extends Rectangle{
 	// If bookmark was clicked change color and stay visible
 	private boolean wasClicked = false;
 
-	private int curColor = 0;
+	//FORGITTESTING EGITBUG
 	
 	/* WIP RENDERING OPTIMIZATION
 	// Font used for GlyphVector rendering
@@ -42,21 +42,6 @@ public class BookMark extends Rectangle{
 	
 	// TODO FIX WHEN YOU HAVE TIME 
 	// TODO add color picker in MSeekBar and feed to constructor
-	private Color colPicker(){
-		if(curColor > 1) {
-			curColor = 0;
-		}
-		
-		if(curColor == 0) {
-			return Color.white;
-		} else if(curColor == 1) {
-			return Color.gray;
-		}
-		
-		curColor ++;
-		
-		return Color.white;
-	}
 	
 	public BookMark(){
 		timeMark = 1;
