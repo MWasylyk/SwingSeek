@@ -49,6 +49,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	private Rectangle seekRect;
 	// Colors used for rendering seek bar
 	private Color seekBarBG = Color.DARK_GRAY, seekBarColor = Color.LIGHT_GRAY; 
+	private int currentClick = -1;
 	// ArrayList to hold BookMark objects
 	// TODO will be used for loading and saving of marker location
 	private ArrayList<BookMark> marks = new ArrayList<BookMark>();
@@ -237,25 +238,40 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 
 	public void mousePressed(MouseEvent arg0) {
 		int x = arg0.getX(), y = arg0.getY();
-		if(isMouseOnMark(x,y) >= 0) {
-			// TODO ADD FINAL BOOKMARK SETTING
-			// TODO FIGURE OUT WHICH DIALOG I WANT/ REMOVE
-			for(int i = 0; i < marks.size(); i ++) {
-				marks.get(i).setWasClicked(false);
+		// get current index of BookMark clicked on
+		int tempIndex = isMouseOnMark(x,y);
+		if(arg0.getButton() == MouseEvent.BUTTON1) {
+			if(tempIndex >= 0) {
+				// If mouse was pressed on BookMark save the current BookMark index for use later with dragging
+				currentClick = tempIndex;
+				// TODO ADD FINAL BOOKMARK SETTING
+				// TODO FIGURE OUT WHICH DIALOG I WANT/ REMOVE
+				for(int i = 0; i < marks.size(); i ++) {
+					marks.get(i).setWasClicked(false);
+				}
+				marks.get(tempIndex).setWasClicked(true);
+				
+			} else if(tempIndex == -2){
+				// If mouse was not clicked on a BookMark do not set -1 for false
+				currentClick = -1;
+				for(int i = 0; i < marks.size(); i ++) {
+					marks.get(i).setWasClicked(false);
+				}
+				// Add BookMark at Mouse Location
+				BookMark tempBook = new BookMark(x, false, Color.cyan);
+				tempBook.setWasClicked(true);
+				marks.add(tempBook);
+				recalcBookMarks();
+				
 			}
-			marks.get(isMouseOnMark(x,y)).setWasClicked(true);
-			repaint();
-		} else if(isMouseOnMark(x,y) == -2){
-			for(int i = 0; i < marks.size(); i ++) {
-				marks.get(i).setWasClicked(false);
+		} else if(arg0.getButton() == MouseEvent.BUTTON3) { // When right clicked on bookmark remove it from screen
+			// TODO add right click removal 
+			if(tempIndex >= 0) {
+				marks.remove(tempIndex);
+				recalcBookMarks();
 			}
-			// Add BookMark at Mouse Location
-			BookMark tempBook = new BookMark(x, false, Color.cyan);
-			tempBook.setWasClicked(true);
-			marks.add(tempBook);
-			recalcBookMarks();
-			repaint();
 		}
+		repaint();
 	}
 
 	public void mouseMoved(MouseEvent arg0) {
@@ -298,7 +314,16 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+		// When mouse is clicked on BookMark and then dragged move the mouse to current mouse location
+ 		int x = arg0.getX();
+		if(currentClick >= 0) {
+			marks.get(currentClick).setWasClicked(true);
+			if(x > seekLeftOffset && x < getSeekLength() + seekLeftOffset) {
+				marks.get(currentClick).setLocationMark(x);	
+			}
+			recalcBookMarks();
+			repaint();
+		}
 		
 	}
 
