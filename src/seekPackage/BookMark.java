@@ -2,20 +2,16 @@
 package seekPackage;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.geom.AffineTransform;
 
+@SuppressWarnings("serial")
 public class BookMark extends Rectangle{
 	// Time location in seconds
 	private int timeMark;
 	// True PX location on SeekBar
 	private int locationMark;
 	// TODO FIGUREOUT WHY I WANTED AN ID (FOR SQL DATABASE AND CONNECTIONS?!)
+	@SuppressWarnings("unused")
 	private int markID;
 	// Description of BookMark (time/name)
 	private String nameString;

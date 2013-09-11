@@ -10,14 +10,12 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
+@SuppressWarnings("serial")
 public class SeekBar extends JComponent implements MouseListener, MouseMotionListener{
 	// Time location in seconds
 	private int timeLocation;
