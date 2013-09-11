@@ -94,14 +94,8 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 			//marks.get(i).setBounds(marks.get(i).getLocationMark() - markThickness, midPoint-(markHeight/2), markThickness, markHeight);
 			g2D.fill(marks.get(i));
 			
-			// New correct way to find time in min.sec
-			double tempTime = roundTwoDec(TimeUnit.SECONDS.toMinutes(marks.get(i).getTimeMark()) 
-							+ (TimeUnit.SECONDS.toSeconds(marks.get(i).getTimeMark())%60.0/100.0));
-		
-			// String used to find size of text box needed to draw
-			String tempS = String.valueOf(tempTime);
-			if(tempS.length() == 3) tempS += "0";
-
+			String tempS = convertTime(marks.get(i).getTimeMark());
+			
 			// BG for time pop-up
 			if(marks.get(i).isMousedOver() || marks.get(i).wasClicked()) {
 				g2D.setColor(Color.black);
@@ -136,6 +130,16 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		if(tempS.length() == 3) tempS += "0";
 		g2D.drawString(tempS, timeLocation, midPoint-arrowScale-3);
 		
+	}
+	
+	// Correct way to calculate time in min.sec
+	private String convertTime(int timeInSec){
+		
+		double tempTime = roundTwoDec(TimeUnit.SECONDS.toMinutes(timeInSec) 
+						+ (TimeUnit.SECONDS.toSeconds(timeInSec)%60.0/100.0));
+		String tempS = String.valueOf(tempTime);
+		if(tempS.length() == 3) tempS += "0";
+		return tempS;
 	}
 	
 	// Rounds a double to 2 decimal places for easy viewing
