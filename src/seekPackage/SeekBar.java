@@ -100,6 +100,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		
 			// String used to find size of text box needed to draw
 			String tempS = String.valueOf(tempTime);
+			if(tempS.length() == 3) tempS += "0";
 
 			// BG for time pop-up
 			if(marks.get(i).isMousedOver() || marks.get(i).wasClicked()) {
@@ -111,7 +112,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 				
 				// Time text
 				g2D.setColor(Color.white);
-				g2D.drawString(String.valueOf(tempTime), 
+				g2D.drawString(tempS, 
 						marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*tempS.length())/2)
 						, (int) (marks.get(i).getY()-1));
 			}
@@ -130,7 +131,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 				
 		// Draw current time
 		g2D.setColor(Color.white);
-		g2D.drawString(String.valueOf(timeInMin), timeLocation, midPoint-arrowScale-3);
+		// String used to print time 
+		String tempS = String.valueOf(timeInMin);
+		if(tempS.length() == 3) tempS += "0";
+		g2D.drawString(tempS, timeLocation, midPoint-arrowScale-3);
 		
 	}
 	

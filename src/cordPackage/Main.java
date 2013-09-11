@@ -52,5 +52,4 @@ public class Main {
 		mainFrame.setResizable(false);
 	}
 
-
 }
