@@ -45,7 +45,8 @@ public class Main {
 		// Set size of seekBar
 		seekBar.setSize(550, 65);
 		seekBar.setMaxTime(300);
-		seekBar.setSeekLocation(150);
+		seekBar.setSeekLocation(250);
+		
 		// Add JComponents to the main panel and the JFrame
 		mainPanel.add(seekBar);
 		mainFrame.add(mainPanel);

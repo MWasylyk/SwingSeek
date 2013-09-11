@@ -34,7 +34,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	// Height in PX used for rendering
 	private int seekThickness = 9;
 	// Scale for arrow rendering
-	private int arrowScale = seekThickness+6;
+	private int arrowScale = seekThickness+4;
 	// midPoint point for SeekBar rendering
 	private int midPoint = getHeight()/2;
 	// BookMark fill thickness
@@ -128,7 +128,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		// String used to print time 
 		String tempS = String.valueOf(timeInMin);
 		if(tempS.length() == 3) tempS += "0";
-		g2D.drawString(tempS, timeLocation, midPoint-arrowScale-3);
+		g2D.drawString(tempS, timeLocation, this.getHeight()-2);
 		
 	}
 	
