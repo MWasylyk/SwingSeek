@@ -274,6 +274,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 			// TODO add right click removal 
 			if(tempIndex >= 0) {
 				marks.remove(tempIndex);
+				currentClick = -1;
 				recalcBookMarks();
 			}
 		}
