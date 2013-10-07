@@ -1,4 +1,7 @@
-// By Michael Wasylyk
+/* By Michael Wasylyk
+ * Example swing application using the SwingSeek component
+ */
+
 package cordPackage;
 
 import java.awt.Color;
