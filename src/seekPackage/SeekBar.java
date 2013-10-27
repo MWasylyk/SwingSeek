@@ -122,7 +122,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		} 		
 		
 		// Draw arrow that scales with thickness of SeekBar
-		g2D.setColor(Color.green);
+		g2D.setColor(Color.red);
 		Polygon arrowPoly = new Polygon(new int[] {timeLocation,timeLocation+arrowScale,timeLocation}, new int[] {midPoint-arrowScale,midPoint,midPoint+arrowScale}, 3);
 		g2D.fillPolygon(arrowPoly);
 				
@@ -302,6 +302,22 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 			}
 		}
 	}
+	
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// When mouse is clicked on BookMark and then dragged move the mouse to current mouse location
+ 		int x = arg0.getX();
+		if(currentClick >= 0) {
+			marks.get(currentClick).setWasClicked(true);
+			if(x > seekLeftOffset && x < getSeekLength() + seekLeftOffset) {
+				marks.get(currentClick).setLocationMark(x);	
+				this.setSeekLocation(marks.get(currentClick).getTimeMark());
+			}
+			recalcBookMarks();
+			repaint();
+		}
+		
+	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -321,21 +337,6 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 
-	}
-
-	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		// When mouse is clicked on BookMark and then dragged move the mouse to current mouse location
- 		int x = arg0.getX();
-		if(currentClick >= 0) {
-			marks.get(currentClick).setWasClicked(true);
-			if(x > seekLeftOffset && x < getSeekLength() + seekLeftOffset) {
-				marks.get(currentClick).setLocationMark(x);	
-			}
-			recalcBookMarks();
-			repaint();
-		}
-		
 	}
 
 }
