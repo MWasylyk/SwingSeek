@@ -3,6 +3,7 @@ package seekPackage;
 
 import java.awt.Color;
 import java.awt.Rectangle;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("serial")
 public class BookMark extends Rectangle{
@@ -14,17 +15,18 @@ public class BookMark extends Rectangle{
 	@SuppressWarnings("unused")
 	private int markID;
 	// Description of BookMark (time/name)
-	private String nameString;
+	private String markerInfo;
+	// Time location
+	private String timeString;
+	
 	// Add coloring to BookMarks for easier viewing
 	private Color color;
-	// Calculate pos or set at mouse
+	// Calculate pos or set at mouse location
 	private boolean calc;
 	// If mouse is over book mark render time
 	private boolean isMousedOver = false;
 	// If bookmark was clicked change color and stay visible
 	private boolean wasClicked = false;
-
-	//FORGITTESTING EGITBUG
 	
 	/* WIP RENDERING OPTIMIZATION
 	// Font used for GlyphVector rendering
@@ -41,20 +43,20 @@ public class BookMark extends Rectangle{
 	
 	public BookMark(){
 		timeMark = 1;
-		nameString = Integer.toString(timeMark);
+		markerInfo = Integer.toString(timeMark);
 		color = Color.BLUE;
 	}
 	
 	public BookMark(int timeMark){
 		this.timeMark = timeMark;
 		calc = true;
-		nameString = Integer.toString(timeMark);
+		markerInfo = Integer.toString(timeMark);
 		color = Color.green;
 	}
 	public BookMark(int locMark,boolean isCalc, Color color){
 		calc = isCalc;
 		locationMark = locMark;
-		nameString = Integer.toString(timeMark);
+		markerInfo = Integer.toString(timeMark);
 		this.color = color;
 	}
 	/*// WIP RENDERING OPIMIZATION
@@ -83,8 +85,17 @@ public class BookMark extends Rectangle{
 	}	
 	*/
 	
+	public String getTimeString() {
+		return timeString;
+	}
+
+	private void setTimeStringToTime() {
+		timeString = convertTime(timeMark);
+	}
+	
 	public void setTimeMark(int timeLocation) {
 		timeMark = timeLocation;
+		setTimeStringToTime();
 	}
 	
 	public void setLocationMark(int location){
@@ -92,7 +103,7 @@ public class BookMark extends Rectangle{
 	}
 	
 	public void setName(String name) {
-		nameString = name;
+		markerInfo = name;
 	}
 	
 	public void setColor(Color colorMark) {
@@ -111,12 +122,12 @@ public class BookMark extends Rectangle{
 		return locationMark;
 	}
 	
-	public String getTipName() {
-		return nameString;
+	public String getMarkerInfo() {
+		return markerInfo;
 	}
 	
-	public void setTipName(String name) {
-		nameString = name;
+	public void setMarkerInfo(String name) {
+		markerInfo = name;
 	}
 
 	public boolean isCalc() {
@@ -141,5 +152,21 @@ public class BookMark extends Rectangle{
 
 	public void setWasClicked(boolean wasClicked) {
 		this.wasClicked = wasClicked;
+	}
+	
+	// Correct way to calculate time in min.sec
+	private String convertTime(int timeInSec){
+		double tempTime = roundTwoDec(TimeUnit.SECONDS.toMinutes(timeInSec) 
+				+ (TimeUnit.SECONDS.toSeconds(timeInSec)%60.0/100.0));
+		String tempS = String.valueOf(tempTime);
+		if(tempS.length() == 3) tempS += "0";
+		return tempS;
+	}
+		
+	// Rounds a double to 2 decimal places for easy viewing
+	private double roundTwoDec(double temp){
+		temp = Math.round(temp * 100.0);
+		temp /= 100.0;
+		return temp;
 	}
 }
