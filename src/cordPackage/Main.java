@@ -5,20 +5,32 @@
 package cordPackage;
 
 import java.awt.Color;
-
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import seekPackage.SeekBar;
 
 public class Main {
-	SeekBar seekBar = new SeekBar();
+	static SeekBar seekBar = new SeekBar();
 	JFrame mainFrame = new JFrame();
-
 	public static void main(String[] args) {
+		int max = (int) seekBar.getMaxTime();
+		
 		// Instantiate the JFrame object
 		@SuppressWarnings("unused")
 		Main m = new Main();
+		seekBar.setSeekLocation(0);
+		Timer timer = new Timer();
+		if(seekBar.getSeekLocation() < max-1) {
+			timer.scheduleAtFixedRate(new TimerTask() {
+				  @Override
+				  public void run() {
+					  seekBar.setSeekLocation(seekBar.getSeekLocation()+1);
+				  }
+				}, 0, 1000);
+		}
 	}
 	
 	// Swing startup code
@@ -47,8 +59,8 @@ public class Main {
 		
 		// Set size of seekBar
 		seekBar.setSize(550, 65);
-		seekBar.setMaxTime(300);
-		seekBar.setSeekLocation(250);
+		seekBar.setMaxTime(20);
+		//seekBar.setSeekLocation(150);
 		
 		// Add JComponents to the main panel and the JFrame
 		mainPanel.add(seekBar);

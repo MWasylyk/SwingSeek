@@ -18,7 +18,6 @@ public class BookMark extends Rectangle{
 	private String markerInfo;
 	// Time location
 	private String timeString;
-	
 	// Add coloring to BookMarks for easier viewing
 	private Color color;
 	// Calculate pos or set at mouse location

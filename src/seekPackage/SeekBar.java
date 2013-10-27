@@ -96,7 +96,7 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 			g2D.fill(marks.get(i));
 			
 			// BG for time pop-up
-			if(marks.get(i).isMousedOver()) {
+			if(marks.get(i).isMousedOver() || marks.get(i).wasClicked()) {
 				g2D.setColor(Color.white);
 				g2D.fillRect(marks.get(i).getLocationMark()-(markThickness/2)-((timeTextScale*marks.get(i).getTimeString().length())/2)
 							, (int) (marks.get(i).getY()-timeHeight)
@@ -135,16 +135,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		
 	}
 	
-	// Correct way to calculate time in min.sec
-	private String convertTime(int timeInSec){
-		
-		double tempTime = roundTwoDec(TimeUnit.SECONDS.toMinutes(timeInSec) 
-						+ (TimeUnit.SECONDS.toSeconds(timeInSec)%60.0/100.0));
-		String tempS = String.valueOf(tempTime);
-		if(tempS.length() == 3) tempS += "0";
-		return tempS;
+	public int getSeekLocation() {
+		return requestedLocation;
 	}
-	
+
 	// Rounds a double to 2 decimal places for easy viewing
 	private double roundTwoDec(double temp){
 		temp = Math.round(temp * 100.0);
@@ -159,6 +153,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		setSeekLocation(requestedLocation);
 		recalcBookMarks();
 		repaint();
+	}
+	
+	public double getMaxTime() {
+		return maxTime;
 	}
 	
 	// Sets physical size of seek bar
@@ -262,6 +260,8 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 				}
 				marks.get(tempIndex).setWasClicked(true);
 				
+				// Move Seek Arrow to bookmark clicked
+				this.setSeekLocation(marks.get(tempIndex).getTimeMark());
 			} else if(tempIndex == -2){
 				// If mouse was not clicked on a BookMark set -1 for false
 				currentClick = -1;
