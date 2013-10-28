@@ -28,7 +28,9 @@ public class Main {
 		timer.scheduleAtFixedRate(new TimerTask() {
 			  @Override
 			  public void run() {
-				  seekBar.setSeekLocation(seekBar.getSeekLocation()+1);
+				  if(seekBar.getSeekLocation()+1 < seekBar.getMaxTime()+1) {
+					  seekBar.setSeekLocation(seekBar.getSeekLocation()+1);
+				  }
 			  }
 		}, 0, 1000);
 		
