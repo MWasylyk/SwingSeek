@@ -31,15 +31,15 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 	// PX from left edge
 	private int seekLeftOffset = 10;
 	// Height in PX used for rendering
-	private int seekThickness = 9;
+	private int seekThickness = 10;
 	// Scale for arrow rendering
 	private int arrowScale = seekThickness+4;
 	// midPoint point for SeekBar rendering
 	private int midPoint = getHeight()/2;
 	// BookMark fill thickness
-	private int markThickness = 10;
+	private int markThickness = seekThickness;
 	// BookMark fill height
-	private int markHeight = 33;
+	private int markHeight = seekThickness*4;
 	// VARS FOR TIP TIME VIEW
 	private int timeHeight = 11;
 	// SIZE TO * FOR NUMBER OF CHARS
@@ -310,7 +310,10 @@ public class SeekBar extends JComponent implements MouseListener, MouseMotionLis
 		if(currentClick >= 0) {
 			marks.get(currentClick).setWasClicked(true);
 			if(x > seekLeftOffset && x < getSeekLength() + seekLeftOffset) {
+				// Move BookMake to current dragged location 
 				marks.get(currentClick).setLocationMark(x);	
+				
+				// Move the seek bar marker to current dragged positon 
 				this.setSeekLocation(marks.get(currentClick).getTimeMark());
 			}
 			recalcBookMarks();
