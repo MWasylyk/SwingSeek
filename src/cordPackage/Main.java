@@ -4,16 +4,12 @@
 
 package cordPackage;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.LayoutManager;
+import seekPackage.SeekBar;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import seekPackage.SeekBar;
 
 public class Main {
 	static SeekBar seekBar = new SeekBar();
@@ -24,7 +20,8 @@ public class Main {
 		Main m = new Main();
 		seekBar.setSeekLocation(0);
 		final Timer timer = new Timer();
-		
+
+        // Test intellij ide git
 		timer.scheduleAtFixedRate(new TimerTask() {
 			  @Override
 			  public void run() {

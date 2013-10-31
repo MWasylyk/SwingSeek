@@ -12,7 +12,6 @@ public class BookMark extends Rectangle{
 	// True PX location on SeekBar
 	private int locationMark;
 	// TODO FIGUREOUT WHY I WANTED AN ID (FOR SQL DATABASE AND CONNECTIONS?!)
-	@SuppressWarnings("unused")
 	private int markID;
 	// Description of BookMark (time/name)
 	private String markerInfo;
